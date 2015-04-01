@@ -1,14 +1,21 @@
 
 var http = require('http');
+var mqtt = require('mqtt');
 
 //  Endpoints
 var HOST_ENDPOINT = 'api.pushetta.com';
+var MQTT_ENDPOINT = 'mqtt://iot.pushetta.com';
   
 var Pushetta = function(apikey) {
   this.apikey = apikey;
 }
 
 Pushetta.prototype.pushMessage = function(channelName, message, callback) {
+  
+  if (typeof channelName !== 'string') {
+    callback(new Error('channelName must be string'), false);
+  }
+
   var postData ={
       "body": message,
       "message_type": "text/plain"
@@ -33,12 +40,38 @@ Pushetta.prototype.pushMessage = function(channelName, message, callback) {
   var req = http.request(options, function(res) {
     res.on('end', function() {
       console.log("END");
-      callback(true);
+      callback(null, true);
     });
+  }).on('error', function(err){
+      callback(err, false);
   });
 
   req.write(postdataString);
   req.end();
 }
+
+Pushetta.prototype.subscribe = function(channelName, callback) {
+  if (typeof channelName !== 'string') {
+    callback(new Error('channelName must be string'), "");
+  }
+
+  self = this;
+
+  if(!self._mqtt_client)
+    self._mqtt_client = mqtt.connect(MQTT_ENDPOINT, {
+      username: this.apikey,
+      password: "pushetta" 
+  });
+
+  self._mqtt_client.on('connect', function () {
+    self._mqtt_client.subscribe(['/pushetta.com/channels/', channelName].join(""));
+  });
+
+  self._mqtt_client.on('message', function (topic, message) {
+    callback(null, message.toString());
+  });
+
+}
+
 
 module.exports = Pushetta
