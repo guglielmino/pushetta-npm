@@ -13,7 +13,7 @@ API Key can be obtained registering on Pushetta website.
 var Pushetta=require("../pushetta");
 pushetta = new Pushetta("{API_KEY}");
 pushetta.pushMessage("{CHANNEL NAME}", "Hello World");
-```javascript
+```
 
 # Subscribe to receive notifications
 
@@ -24,5 +24,5 @@ var ptta = new Pushetta("{API_KEY_HERE}");
 ptta.subscribe("WebPush", function (msg) {
 	console.log(msg['message']);
 });
-```javascript
+```
 
