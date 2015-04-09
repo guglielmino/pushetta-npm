@@ -68,7 +68,8 @@ Pushetta.prototype.subscribe = function(channelName, callback) {
   });
 
   self._mqtt_client.on('message', function (topic, message) {
-    callback(null, message.toString());
+    var channel = topic.substr(topic.lastIndexOf('/') + 1);
+    callback(null,  { 'message' : message.toString(), 'channel' : channel });
   });
 
 }

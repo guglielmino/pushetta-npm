@@ -4,7 +4,7 @@ var should = require('chai').should(),
     sinon = require('sinon'),
     http = require('http'),
     Pushetta = require('../pushetta'),
-    pushetta = new Pushetta("0b73575eda098fad2281337f4dc9d55e22ee57dd");
+    pushetta = new Pushetta("{API_KEY_HERE}");
 
 
 describe('pushetta', function(){
