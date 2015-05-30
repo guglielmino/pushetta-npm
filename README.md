@@ -3,7 +3,13 @@
 Simple node module for interact with Pushetta API.
 Pushetta is a cloud API to send push notifications to smartphones and web browsers, look at the site for more informations http://www.pushetta.com
 
-## Sample use
+## Installation
+
+Module is on npm index, install with
+
+```bash
+npm install pushetta
+```
 
 API Key can be obtained registering on Pushetta website.
 
